@@ -9,10 +9,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GroupShuffleSplit
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import BaggingClassifier
+
 from sklearn import svm
 import matplotlib.pyplot as plt
 import csv
@@ -74,7 +76,7 @@ x_all_mat = x_all.as_matrix()
 y_all_mat = y_all.as_matrix()
 temp_x = df_s['Neighborhood'].as_matrix()
 
-plt.figure(1)
+plt.figure(1).set_size_inches(12,8)
 
 plt.subplot(1,3,1)
 plt.scatter(df['Neighborhood'],df['GrossSqFt'], s=10, alpha=0.2, color='magenta')
@@ -97,7 +99,7 @@ plt.title('MarketValueperSqFt', fontsize= 10)
 plt.xticks(fontsize=8)
 plt.yticks(fontsize=8)
 
-
+plt.savefig('plots/01.png')
 
 '''------------------------------------
 Normalizing the data
@@ -134,7 +136,8 @@ print (x_test.shape)
 print ('y_test:')
 print (y_test.shape)
 
-
+rdf = RandomForestClassifier(max_depth=10, n_estimators=15, bootstrap=True)
+rdf.fit(x_all,y_all)
 
 '''------------------------------------
 SVM Kernel
@@ -150,13 +153,60 @@ print("number of support vectors",len(svm_rbf.support_))
 print(error_svm_rbf, "misclassified data out of", ts, "(",error_svm_rbf/ts,"%)")
 
 
+'''--------------------
+CART (Decision Tree)
+--------------------'''
+# Train
+dtc = DecisionTreeRegressor(max_depth=6)
+dtc.fit(x_training, y_training)
 
+# Predicting
+ypred = dtc.predict(x_test)
+
+# Computint prediction error
+error = np.mean((ypred - y_test) ** 2)
+
+c=0
+plt.figure(2)
+plt.scatter(x_training[:,c],y_training[:], s=10)
+plt.scatter(x_test[:,c],y_test[:], s=10, color='yellow')
+plt.scatter(x_test[:,c],ypred[:], s=10, color='green')
+
+ts = y_test.shape[0]
+for i in range (ts):
+    x = x_test[i,c]
+    yt = y_test[i]
+    yp = ypred[i]
+    plt.plot([x,x], [yt,yp], color="gray")
+
+print("----------Decision Tree Regression----------")
+print("Regression error:", error)
+
+'''--------------------
+CART (Decision Tree) + Bagging
+--------------------'''
+
+'''--------------------
+CART (Decision Tree) + Bagging + boosting
+--------------------'''
+
+'''--------------------
+Random Trees
+--------------------'''
+
+'''--------------------
+Random Trees + Bagging
+--------------------'''
+
+'''--------------------
+Random Trees + Bagging + boosting
+--------------------'''
 
 '''------------------------------------
 Visualization
 ------------------------------------'''
 
-plt.figure(2)
+plt.figure(2).set_size_inches(12,8)
 
 # SVM Kernels
 plt.subplot(2,2,1)
@@ -184,6 +234,7 @@ plt.yticks(fontsize=8)
 # plt.yticks(fontsize=8)
 #
 #
+plt.savefig('plots/02.png')
 plt.show()
 
-print ('\n❤️  ❤️  ❤️\n')
+print ('\n\n~~~', '\nall good 🥑')
