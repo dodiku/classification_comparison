@@ -20,6 +20,13 @@ import matplotlib.pyplot as plt
 import csv
 import pandas as pd
 
+'''--------------------
+configurations
+--------------------'''
+bootstrap = True
+depth = 13
+
+print ('✊  \nbootstrap:', bootstrap, '\ndepth:', depth,'\n')
 '''------------------------------------
 LOADING THE DATASET THAT INCLUDES THE FOLLOWING COLUMNS:
     [0] = Neighborhood
@@ -38,7 +45,7 @@ cleaning the data
 --------------------'''
 df_s = df
 ### cleaning [4] = GrossIncomeSqFt: removing all relevant rows for GrossIncomeSqFt bigger than 50, or smaller than 10
-# print ('df before trimming [4]: ', df.shape)
+print ('df before trimming [4]: ', df.shape)
 df_s = df_s[(df.GrossIncomeSqFt > 10) & (df.GrossIncomeSqFt < 50)]
 # print ('df_s after trimming [4]: ', df_s.shape)
 
@@ -85,23 +92,23 @@ plt.figure(1).set_size_inches(12,8)
 plt.subplot(1,3,1)
 plt.scatter(df['Neighborhood'],df['GrossSqFt'], s=10, alpha=0.2, color='magenta')
 plt.scatter(temp_x,x_all_mat[:,0], s=10, color='blue', alpha=0.4)
-plt.title('GrossSqFt', fontsize= 10)
-plt.xticks(fontsize=8)
-plt.yticks(fontsize=8)
+plt.title('GrossSqFt', fontsize= 18)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
 
 plt.subplot(1,3,2)
 plt.scatter(df['Neighborhood'],df['GrossIncomeSqFt'], s=10, alpha=0.2, color='magenta')
 plt.scatter(temp_x,x_all_mat[:,1], s=10, color='blue', alpha=0.4)
-plt.title('GrossIncomeSqFt', fontsize= 10)
-plt.xticks(fontsize=8)
-plt.yticks(fontsize=8)
+plt.title('GrossIncomeSqFt', fontsize= 18)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
 
 plt.subplot(1,3,3)
 plt.scatter(df['Neighborhood'],df['MarketValueperSqFt'], s=10, alpha=0.2, color='magenta')
 plt.scatter(temp_x,x_all_mat[:,2], s=10, color='blue', alpha=0.4)
-plt.title('MarketValueperSqFt', fontsize= 10)
-plt.xticks(fontsize=8)
-plt.yticks(fontsize=8)
+plt.title('MarketValueperSqFt', fontsize= 18)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
 
 plt.savefig('plots/01.png', dpi=300)
 
@@ -156,7 +163,7 @@ CART (Decision Tree)
 http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html
 --------------------'''
 # Train
-dtc = DecisionTreeClassifier(max_depth=8)
+dtc = DecisionTreeClassifier(max_depth=depth)
 dtc.fit(x_training, y_training)
 
 # Predicting
@@ -177,7 +184,7 @@ print(cart_error, "misclassified data out of", ts, "(",cart_error/ts,"%)\n")
 CART (Decision Tree) + Bagging
 http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html
 --------------------'''
-bagb = BaggingClassifier(dtc, n_estimators=30, bootstrap_features=True, bootstrap=True)
+bagb = BaggingClassifier(dtc, n_estimators=30, bootstrap_features=True, bootstrap=bootstrap)
 # adab = AdaBoostClassifier(DecisionTreeClassifier(max_depth=2), n_estimators=20,learning_rate=1.5,algorithm="SAMME")
 bagb.fit(x_training,y_training)
 
@@ -221,7 +228,7 @@ print(adab_error, "misclassified data out of", ts, "(",adab_error/ts,"%)\n")
 '''--------------------
 Random Trees
 --------------------'''
-rdf = RandomForestClassifier(max_depth=6, n_estimators=35, bootstrap=True)
+rdf = RandomForestClassifier(max_depth=depth, n_estimators=24, bootstrap=bootstrap)
 rdf.fit(x_all,y_all)
 
 # Predicting
@@ -239,7 +246,7 @@ print(rdf_error, "misclassified data out of", ts, "(",rdf_error/ts,"%)\n")
 '''--------------------
 Random Trees + Bagging
 --------------------'''
-rf_bagb = BaggingClassifier(rdf, n_estimators=45, bootstrap_features=False, bootstrap=True)
+rf_bagb = BaggingClassifier(rdf, n_estimators=15, bootstrap_features=False, bootstrap=bootstrap)
 rf_bagb.fit(x_training,y_training)
 
 # Predicting
@@ -259,7 +266,7 @@ Random Trees + Boosting
 --------------------'''
 # rf_adab = AdaBoostClassifier(DecisionTreeClassifier(max_depth=8), n_estimators=20)
 # rf_adab = AdaBoostClassifier(DecisionTreeClassifier(max_depth=2), n_estimators=20,learning_rate=1.5,algorithm="SAMME") #[dodiku] there are many more parameters we can play with
-rf_adab = AdaBoostClassifier(rdf, n_estimators=8,learning_rate=1.5,algorithm="SAMME.R")
+rf_adab = AdaBoostClassifier(rdf, n_estimators=14,learning_rate=1.5,algorithm="SAMME.R")
 # rf_adab = GradientBoostingClassifier(max_depth=5, n_estimators=30)
 
 rf_adab.fit(x_training,y_training)
@@ -336,6 +343,6 @@ plt.yticks(fontsize=8)
 
 
 plt.savefig('plots/02.png', dpi=300)
-plt.show()
+# plt.show()
 
 print ('\n\n~~~', '\nall good 🥑\n')

@@ -14,3 +14,7 @@ Comparing the following classification methods:
 
 ### Classification methods comparison
 ![Classification methods comparison](plots/02.png)
+
+
+### Accuracy using different tree depth
+![Classification methods comparison](plots/table_depth.png)

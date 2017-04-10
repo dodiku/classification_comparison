@@ -1,0 +1,103 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{titling}
+\usepackage{url,hyperref}
+
+\begin{document}
+
+\title{SVM, CART, and Random Forest: A Comparative Study}
+
+\author{Dror Ayalon (dda290)}
+
+\date{%
+CUSP-GX-5006 Machine Learning for Cities (NYU)\\
+Assigment \# 3\\
+\rule{\textwidth}{1pt}
+}
+
+\posttitle{\par\rule{3in}{0.4pt}\end{center}\vskip 0.5em}
+% \postdate{\rule{\textwidth}{1pt}}
+
+\maketitle
+
+\begin{abstract}
+Classification in on of the major tasks in machine learning. This study compares the restuls of multiple classification algorithms, to find the most effective technique for the given dataset.
+Many of the results of this study were made under the assumeption that different classification techniques might perform better on different datasets. Therefore, the results of this study could be relevant to this dataset, or to datasets of similar nature.
+\\The classification techniques that were studied are: [1] Support Vector Machines (SVM with Kernels), [2] Decision Trees (CART), [3] Decision Trees (CART) with Bagging, [4] Decision Trees (CART) with Boosting, [5] Random Forest, [6] Random Forest with Bagging, and [7] Random Forest with Boosting.
+\\The main result is ?????????????????
+\end{abstract}
+
+\section{Methods and Data Sets}
+\begin{enumerate}
+
+  \item The dataset used for this study is 'manhattan-dof.csv', which was made available to us through NYU classes. The dataset includes 2645 samples. The attributes that were used from this dataset are the following:
+  \begin{itemize}
+    \item BldClassif - Building class. Used as the classes for the classification procedure.
+    \item GrossSqFt, GrossIncomeSqFt, MarketValueperSqFt - Indipendent variables that were used to generate the prediction model.
+  \end{itemize}
+
+  \item The data was cleaned to remove outlies. This process improved the results dramatically, probably due to the fact that tree algorithms are very sensitive to outliers. See figure~\ref{cleaning}.
+    \begin{figure}[!b]
+      \begin{center}
+        \includegraphics[width=3in]{../plots/01.png}
+      \end{center}
+      \label{cleaning}
+      \caption{\small Original dataset VS. Cleaned dataset}
+    \end{figure}
+
+  \item The data was normalized to values between 0 and 1. This process improved the results of the SVM algorith dramatically, from 22.5\% - 25.5\% error rate to 8.2\% - 9.3\% error rate after the normalization.
+
+  \item The entire study was done using Python3 and the machine learning Python package scikit-learn (http://scikit-learn.org/).
+
+  \item To validate the results of each classification method, a cross-validation process was used, based on the 'train\_test\_split' method of the scikit-learn package. During the process, 5 batches of data were generated. 4 of which were used as training sets and 1 was used as a validation set. The random split process was done 50 times for each classfication method. Moreover, a Bootstraping procedure was used to improve the restuls of a few of the classification algorithms. This topic will be discussed below.
+
+  \item The following scikit-learn algorithms were used to the generate the results for this study:
+    \begin{itemize}
+      \item sklearn.svm.svc - Was used to perform SVM with kernels (gamma=500).
+      \item DecisionTreeClassifier - Was used to classify the data using a regular decision tree algorithm. The maximum depth of the tree was set to values between 4 and 8. More about the effect of the depth of the decision tree on the overall accuracy of the results on the 'Results' section.
+      \item RandomForestClassifier - Was used to classify the data using a random forest algorithm. This method was most effective with low number of trees (no improvement pass n\_estimators=6), and low in depth (no more than 6 levels). This observation could be explained by the small size of the dataset, and that Random Forest does not need many iterations to achieve good results. The downside of using a small number of small trees is that these configuration effected very badly on the Boosting procedure. More about the effect of the depth of the decision tree on the overall accuracy of the results on the 'Results' section.
+      \item BaggingClassifier - Was used to apply a Bagging process on a decision tree algorithm or a random tree algorithm. In most cases, this method showed a slight improvemet over the results of the algorithm without Bagging. Furthermore, in most cases, allowing the algorithm to choose features randomally with replacement (bootstrap\_features = True) improved the results.
+      \item AdaBoostClassifier - Was used to apply a Boosting process on a decision tree algorithm or a random tree algorithm. The AdaBoostClassifier algorithm showed better results than scikit-learn's GradientBoostingClassifier algorithm across the board.
+    \end{itemize}
+
+    \item Using these algorithms, the following methods were compared:
+    \begin{enumerate}
+      \item Support Vector Machines (SVM with Kernels)
+      \item Decision Trees (CART)
+      \item Decision Trees (CART) with Bagging
+      \item Decision Trees (CART) with Boosting
+      \item Random Forest
+      \item Random Forest with Bagging
+      \item Random Forest with Boosting
+    \end{enumerate}
+
+\end{enumerate}
+
+\begin{figure*}[!t]
+  \begin{center}
+    \includegraphics[width=5.8in]{../plots/table_depth.png}
+  \end{center}
+  \caption{\small A comparison between error rates of different classification methods with a changing maximum depth. It is clear that Random Forest methods improve with depth, while regular decisiton trees do not.\\Boosting improved the regular Decision Tree results.}
+  \label{table-depth}
+\end{figure*}
+
+\section{Results}
+\begin{itemize}
+  \item The result of running a comparison between all the shows that the Random Forest algorithm, using 24 trees (n\_estimators=24), with maximum depth of 14 levels (max\_depth=14), and bootstraping is the most accurate method for the given dataset with 1.06\% error.
+  \item The Boosting mechanism did not improve the results of the Random Tree algorithm (see figure~\ref{table-depth}). This outcome might be because the Random Forest algorithm is generating a variety of trees, and use them to reduce variance, which is general intent behind the Boosting mechanism. Another reason could be the nature of the dataset.
+  \item The best SVM result showed 9\% error in classification, and therefore, it is not the best method to predict classes on the given dataset.
+\end{itemize}
+
+
+
+\begin{figure*}[!b]
+  \begin{center}
+    \includegraphics[width=5.75in]{../plots/02.png}
+  \end{center}
+  \caption{\small The classification results from all tested algorithms. The graphs show the best consistent result from each algorithm.}
+  \label{classes}
+\end{figure*}
+
+\end{document}
