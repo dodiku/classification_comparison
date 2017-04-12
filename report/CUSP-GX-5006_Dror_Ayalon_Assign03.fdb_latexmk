@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1491794252 "CUSP-GX-5006_Dror_Ayalon_Assign03.tex" "CUSP-GX-5006_Dror_Ayalon_Assign03.pdf" "CUSP-GX-5006_Dror_Ayalon_Assign03" 1491794254
+["pdflatex"] 1491954561 "CUSP-GX-5006_Dror_Ayalon_Assign03.tex" "CUSP-GX-5006_Dror_Ayalon_Assign03.pdf" "CUSP-GX-5006_Dror_Ayalon_Assign03" 1491958725
   "../plots/01.png" 1491793769 707516 cf986dfc0da8d69441fc806bf7303a85 ""
   "../plots/02.png" 1491793773 795020 ba7d42163012def113f4c24d2d579a65 ""
   "../plots/table_depth.png" 1491790245 290435 8db1e0828067c47424edf78ada44bd05 ""
@@ -69,11 +69,11 @@
   "/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1491764717 1888048 f2c5faed5981a516f406b2ccc20bff71 ""
   "/usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt" 1491764766 3873396 a8bbd395c08609717209a6b9319888e0 ""
   "/usr/local/texlive/2016/texmf.cnf" 1463979140 577 2938757e76f31531e65cc647e3507693 ""
-  "CUSP-GX-5006_Dror_Ayalon_Assign03.aux" 1491794254 3323 bcc281c168fae151cd83e7a0394101d9 ""
-  "CUSP-GX-5006_Dror_Ayalon_Assign03.out" 1491794254 98 b6db0ac614c5a72241599dbcc5e3fefa ""
-  "CUSP-GX-5006_Dror_Ayalon_Assign03.tex" 1491794251 6820 5e596ad51419833a251c8ce41bef4753 ""
+  "CUSP-GX-5006_Dror_Ayalon_Assign03.aux" 1491954564 3323 bcc281c168fae151cd83e7a0394101d9 ""
+  "CUSP-GX-5006_Dror_Ayalon_Assign03.out" 1491954564 98 b6db0ac614c5a72241599dbcc5e3fefa ""
+  "CUSP-GX-5006_Dror_Ayalon_Assign03.tex" 1491954565 6893 e56b1f6eb76c0ac648e491c45353a695 ""
   (generated)
   "CUSP-GX-5006_Dror_Ayalon_Assign03.pdf"
   "CUSP-GX-5006_Dror_Ayalon_Assign03.aux"
-  "CUSP-GX-5006_Dror_Ayalon_Assign03.log"
   "CUSP-GX-5006_Dror_Ayalon_Assign03.out"
+  "CUSP-GX-5006_Dror_Ayalon_Assign03.log"
